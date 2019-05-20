@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/begin.jpg</file>
+        <file>res/beijin.jpg</file>
+        <file>res/game.jpg</file>
+        <file>res/sound.jpg</file>
+        <file>res/tip.jpg</file>
+        <file>res/title.jpg</file>
+        <file>res/can.ico</file>
+        <file>res/bac.wav</file>
+    </qresource>
+</RCC>
