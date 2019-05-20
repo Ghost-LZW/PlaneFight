@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include<global.h>
+#include<QPainter>
 
 namespace Ui {
 class GameWidget;
@@ -22,6 +23,11 @@ private:
     void Gamebegin();
     void Play();
     int ExitGame();
+    void BackMeau();
+    QPixmap *Heropic;
+    QPixmap *Enemypic;
+    QPixmap *Bullpic;
+    Plan *myplan;
     QImage *tippage;
     QSound *backsound;
     QImage *background;
@@ -31,6 +37,7 @@ private:
     QImage *start;
     bool pausStatu;
     bool soundStatu;
+    int EnemyShotID, EnemyMoveID, BulletMoveID, GlobalID;
 
 protected:
     bool eventFilter(QObject *obj, QEvent *ev);//处理事件

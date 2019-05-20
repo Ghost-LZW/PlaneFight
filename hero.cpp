@@ -2,11 +2,15 @@
 
 hero::hero(){
     PicLocation = "";
+    PLANSIZE = 50;
     gg = true;
-    my.Blod = 10000;
+    my.Blood = 10000;
     my.Attac = 10;
     my.Speed = 5;
     my.level = 1;
+    socor = 0;
+    PlanImage = new QPixmap;
+    PlanImage->load(PicLocation);
 }
 
 void hero::move(int key){
@@ -22,4 +26,9 @@ void hero::move(int key){
     }
     Loc.plan.setWidth(PLANSIZE);
     Loc.plan.setHeight(PLANSIZE);
+}
+
+hero::~hero(){
+
+
 }

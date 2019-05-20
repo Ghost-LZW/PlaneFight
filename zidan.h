@@ -6,19 +6,20 @@ class plan;
 class bullet{
 public:
     bullet();
-    ~bullet();
-    struct sx{
-        int Harm;
-    };
+    virtual ~bullet();
 
-    int xspeed, yspeed;
+    Bullet *head;
+    int xspeed, yspeed, cnt;
     QSound *BulletSound;
-    QImage *BulletPic;
-    bullet *head;
+    QPixmap *BulletPic;
+    int BulletSIZE;
+    QString SounLocation = "";
+    QString PicLocation = "";
     virtual void init(int harm);
     virtual void move();
     virtual void skill();
-    virtual void add(int x, int y, int harm);
+    virtual void destory(int k);
+    virtual void add(int x, int y, int harm, int fx);
 private:
 
 };

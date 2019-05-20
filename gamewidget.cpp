@@ -10,6 +10,11 @@
 #include<enemy.h>
 #include<global.h>
 #include<normalbullet.h>
+#include<windows.h>
+
+hero *Ownplan;
+enemy *Fish;
+normalbullet *Bull;
 
 GameWidget::GameWidget(QWidget *parent) :
     QWidget(parent),
@@ -97,17 +102,114 @@ void GameWidget::Play(){
     repaint();
     hero *Ownplan;
     enemy *Fish;
-    normalbullet *Bullet;
-    Ownplan->init(1, 2);
-    Fish->init(1, 2);
-    Ownplan->init(1, 2);
+    normalbullet *Bull;
+    Ownplan = new hero;
+    Ownplan->init(0, GAMEHIGHT / 2);
+    Fish = new enemy;
+    Bull = new normalbullet;
+    this->Heropic = Ownplan->PlanImage;
+    this->Enemypic = Fish->PlanImage;
+    this->Bullpic = Bull->BulletPic;
+    *this->myplan = Ownplan->Loc;
+    EnemyShotID = startTimer(SLOWSHOT);
+    EnemyMoveID = startTimer(SLOWSPEED);
+    BulletMoveID = startTimer(10);
+    GlobalID = startTimer(BOURNTIME);
+    MSG msg;
 
+    while(true){
+        if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)){
+            if(msg.message == WM_QUIT)
+                break;
+            else if(msg.message == WM_KEYDOWN) {
+                unsigned key = msg.wParam;
+                switch (key) {
+                case 'A':
+                case 'a':
+                case 'W':
+                case 'w':
+                case 'S':
+                case 's':
+                case 'd':
+                case 'D':
+                    Ownplan->move(int(key));
+                    break;
+                case 32:
+                case 'j':
+                case 'J':
+                    Bull->add(int(myplan->plan.x()) + Ownplan->PLANSIZE, int(myplan->plan.y()) + Ownplan->PLANSIZE / 2, Ownplan->my.Attac, 1);
+                    break;
+                default: break;
+                }
+            }
+            update();
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+        /*int lastlevel = Ownplan->my.level;
+        Ownplane.level = Ownplane.my.score / 10 + 1;*/
 
+        if(!Fish->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()))){
+            Ownplan = nullptr;
+            myplan = nullptr;
+            Ownplan->destory();
+            while(Fish->cnt)
+                Fish->destory(0);
+            break;
+        }
+
+        if(Bull->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()), 1)){
+            break;
+        }
+
+        for(int i = 0; i < Fish->cnt; i++){
+            int x = Fish->getinf(i, 0);
+            int y = Fish->getinf(i, 1);
+            if(x != -1 && Bull->check(Fish->PLANSIZE, x, y, 0)){
+                Fish->destory(i);
+                --i;
+                Ownplan->socor++;
+            }
+        }
+
+        if(Ownplan->my.Blood == 0) break;
+        update();
+    }
+    killTimer(EnemyMoveID);
+    killTimer(EnemyShotID);
+    killTimer(BulletMoveID);
+    killTimer(GlobalID);
+    char Info[40];
+    sprintf(Info, "*你的得分是%d*\n*达到等级%d*", Ownplan->socor, Ownplan->my.level);
+    QString buffer(Info);
+    QMessageBox::information(this, "GameOver", buffer);
+    BackMeau();
 }
 
 void GameWidget::timerEvent(QTimerEvent *t){
-
-
+    srand(time_t(nullptr));
+    if(t->timerId() == GlobalID)
+    {
+        Fish->add(GAMEWIGHT - Fish->PLANSIZE, (rand() % (GAMEHIGHT - Fish->PLANSIZE)), rand() % 10000);
+    }
+    else if(t->timerId() == EnemyMoveID)
+    {
+        Fish->move();
+    }
+    else if(t->timerId() == BulletMoveID)
+    {
+        Bull->move();
+    }
+    else if(t->timerId() == EnemyShotID)
+    {
+        Plan *it = Fish->Phead;
+        while(it != nullptr)
+        {
+            Bull->add(it->plan.x() + it->plan.width() + Bull->BulletSIZE, it->plan.y() + (Fish->PLANSIZE + Bull->BulletSIZE / 2) / 2, 100, 0);
+            it = it->next;
+        }
+    }
+    update();
 }
 
 bool GameWidget::eventFilter(QObject *obj, QEvent *ev){
@@ -137,11 +239,30 @@ bool GameWidget::eventFilter(QObject *obj, QEvent *ev){
 }
 
 void GameWidget::paintEvent(QPaintEvent *){
+    QPainter painter(this);
+    if(background == nullptr)return;
     ui->background_label->resize(ui->back->size());
     ui->tip->resize(ui->Tip->size());
     ui->start->resize(ui->Start->size());
     ui->sound->resize(ui->soun->size());
     ui->titele->resize(ui->title->size());
+    painter.drawPixmap(0, 0, background->width(), background->height(), QPixmap::fromImage(*background));
+    if(this->Heropic == nullptr || this->myplan == nullptr)
+        return;
+    painter.drawPixmap(myplan->plan.x(), myplan->plan.y(), myplan->plan.width(), myplan->plan.height(), *Heropic);
+    if(Enemypic == nullptr)return;
+    Plan* enemy = Fish->Phead;
+    while (enemy != nullptr) {
+        painter.drawPixmap(enemy->plan.x(), enemy->plan.y(), enemy->plan.width(), enemy->plan.height(), *Enemypic);
+        enemy = enemy->next;
+    }
+    if(Bullpic == nullptr)return;
+    Bullet *bullet = Bull->head;
+    while (bullet != nullptr) {
+        painter.drawPixmap(bullet->bull.x(), bullet->bull.y(), bullet->bull.width(), bullet->bull.height(), *Bullpic);
+        bullet = bullet->next;
+    }
+
 }
 
 GameWidget::~GameWidget()

@@ -8,6 +8,7 @@ public:
      hero();
     ~hero();
 
+     int socor;
      void move(int k);
 };
 

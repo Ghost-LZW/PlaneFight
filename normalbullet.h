@@ -2,8 +2,15 @@
 #define NORMALBULLET_H
 #include<zidan.h>
 
-class normalbullet : bullet{
+class normalbullet : public bullet{
+public:
+    normalbullet();
+    ~normalbullet();
 
+    void destory(int k);
+    void move();
+    void add(int x, int y, int harm, int fx);
+    bool check(int herosize, int basex, int basey, int flag);
 };
 
 #endif // NORMALBULLET_H

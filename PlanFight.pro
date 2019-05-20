@@ -30,6 +30,7 @@ SOURCES += \
         hero.cpp \
         main.cpp \
         gamewidget.cpp \
+        normalbullet.cpp \
         plan.cpp \
         zidan.cpp
 

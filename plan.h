@@ -8,21 +8,22 @@ public:
     plan();
     virtual ~plan();
     struct sx{
-        int Blod, Size, Speed, Attac, level;
+        int Blood, Speed, Attac, level;
     }my;
 
     Plan Loc;
-    int PLANSIZE;
+    Plan *Phead = nullptr;
     QString PicLocation;
 
+    int PLANSIZE;
     QSound *PersonBackgroundSound;
     QPixmap *PlanImage;
     plan *head;
     bool gg;
     virtual void skill();
-    virtual void init(int x, int y);
-    virtual void destory();
-    virtual void move(int key);
+    void init(int x, int y);
+    void destory();
+    void move(int key);
     virtual void attac();
     virtual void hurt();
     virtual void add(int x, int y, int blood);
