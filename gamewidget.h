@@ -4,6 +4,10 @@
 #include <QWidget>
 #include<global.h>
 #include<QPainter>
+#include<hero.h>
+#include<enemy.h>
+#include<normalbullet.h>
+#include<QKeyEvent>
 
 namespace Ui {
 class GameWidget;
@@ -24,17 +28,22 @@ private:
     void Play();
     int ExitGame();
     void BackMeau();
-    QPixmap *Heropic;
-    QPixmap *Enemypic;
-    QPixmap *Bullpic;
-    Plan *myplan;
-    QImage *tippage;
-    QSound *backsound;
-    QImage *background;
-    QImage *tip;
-    QImage *sound;
-    QImage *title;
-    QImage *start;
+    hero *Ownplan = nullptr;
+    enemy *Fish = nullptr;
+    normalbullet *Bull = nullptr;
+    QPixmap *Heropic = nullptr;
+    QPixmap *Enemypic = nullptr;
+    QPixmap *Bullpic = nullptr;
+    Plan *myplan = nullptr;
+    Plan *Fishhead = nullptr;
+    Bullet *bullhead = nullptr;
+    QImage *tippage = nullptr;
+    QSound *backsound = nullptr;
+    QImage *background = nullptr;
+    QImage *tip = nullptr;
+    QImage *sound = nullptr;
+    QImage *title = nullptr;
+    QImage *start = nullptr;
     bool pausStatu;
     bool soundStatu;
     int EnemyShotID, EnemyMoveID, BulletMoveID, GlobalID;

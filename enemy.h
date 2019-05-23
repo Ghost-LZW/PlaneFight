@@ -9,13 +9,15 @@ public:
     enemy();
     ~enemy();
     int cnt = 0;
+    Plan *Phead = nullptr;
     int vx, vy;
     void add(int x, int y, int blood);
-    void init(int x, int y);
-    void move();
-    void destory(int k);
+    Plan* init(int x, int y);
+    Plan* move();
+    Plan* destory(int k);
     bool check(int herosize, int basex, int basey);
     int getinf(int i, int wh);
+    void init();
 };
 
 #endif // ENEMY_H

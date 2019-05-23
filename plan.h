@@ -11,8 +11,7 @@ public:
         int Blood, Speed, Attac, level;
     }my;
 
-    Plan Loc;
-    Plan *Phead = nullptr;
+    Plan* Loc;
     QString PicLocation;
 
     int PLANSIZE;
@@ -20,13 +19,13 @@ public:
     QPixmap *PlanImage;
     plan *head;
     bool gg;
-    virtual void skill();
+    //virtual void skill();
     void init(int x, int y);
     void destory();
     void move(int key);
-    virtual void attac();
-    virtual void hurt();
-    virtual void add(int x, int y, int blood);
+    //virtual void attac();
+    //virtual void hurt();
+    //void add(int x, int y, int blood);
 
 private:
 };

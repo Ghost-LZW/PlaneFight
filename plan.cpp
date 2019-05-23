@@ -10,12 +10,12 @@ plan::~plan(){
 }
 
 void plan::init(int x, int y){
-    Loc.plan.setX(x);
-    Loc.plan.setY(y);
-    Loc.plan.setWidth(PLANSIZE);
-    Loc.plan.setHeight(PLANSIZE);
-    PlanImage = new QPixmap;
-    PlanImage->load(PicLocation);
+    Loc->plan.setX(x);
+    Loc->plan.setY(y);
+    Loc->plan.setWidth(PLANSIZE);
+    Loc->plan.setHeight(PLANSIZE);
+    //PlanImage = new QPixmap;
+   // PlanImage->load(PicLocation);
 }
 
 void plan::destory(){

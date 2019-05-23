@@ -10,6 +10,7 @@ public:
 
      int socor;
      void move(int k);
+     void init(int x, int y);
 };
 
 #endif // HERO_H

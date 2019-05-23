@@ -2,14 +2,25 @@
 #include<QSound>
 
 normalbullet::normalbullet(){
+
+}
+
+void normalbullet::init(){
+    PicLocation = ":/res/bulllet.png";
     BulletPic = new QPixmap;
     BulletPic->load(PicLocation);
-    BulletSound = new QSound(SounLocation);
-    BulletSIZE = 10;
-    head = nullptr;
+    //BulletSound = new QSound(SounLocation);
+    BulletSIZE = 5;
+    Head = nullptr;
+
     cnt = 0;
     xspeed = 20;
     yspeed = 1;
+}
+
+void normalbullet::ask(){
+    qDebug() << "see here";
+    if(Head == nullptr)qDebug() << "wroong";
 }
 
 normalbullet::~normalbullet(){
@@ -17,7 +28,7 @@ normalbullet::~normalbullet(){
     delete BulletSound;
 }
 
-void normalbullet::add(int x, int y, int harm, int fx){
+Bullet *normalbullet::add(int x, int y, int harm, int fx){
      Bullet *it;
      it = new Bullet;
      it->fx = fx;
@@ -27,18 +38,20 @@ void normalbullet::add(int x, int y, int harm, int fx){
      it->bull.setWidth(BulletSIZE);
      it->bull.setHeight(BulletSIZE);
      it->next = nullptr;
-     if(head == nullptr){
-         head = it;
+     if(Head == nullptr){
+         Head = it;
      }
      else {
-         it->next = head;
-         head = it;
+         it->next = Head;
+         Head = it;
      }
      cnt++;
+     return  Head;
 }
 
 bool normalbullet::check(int herosize, int basex, int basey, int flag){
-     Bullet *it = head;
+     Bullet *it = Head;
+     flag = !flag;
      int i = 0;
      while(it != nullptr){
          Bullet *temp = it->next;
@@ -51,37 +64,13 @@ bool normalbullet::check(int herosize, int basex, int basey, int flag){
          }
          it = temp;
      }
-     return  true;
+     return true;
 }
 
-/*bool bullet::check(int x, int y, int flag)  // dead=0
-{
-    Bair *p = head;
-    while (p != NULL)
-    {
-        Bair *nxt = p->next;
-        if (p->flag | flag)
-        {
-            if (flag == 0 && (p->rect.x() >= x && p->rect.x() <= x + SizeEnemy) && (p->rect.y() >= y && p->rect.y() <= y + SizeEnemy))
-            {
-                head = bullet::del(p);
-                return 0;
-            }
-            else if (flag == 1 && (p->rect.x() > x && p->rect.x() < x + SizeHero) && (p->rect.y() > y && p->rect.y() < y + SizeHero))
-            {
-                head = bullet::del(p);
-                return 0;
-            }
-        }
-        p = nxt;
-    }
-    return 1;
-}*/
-
-void normalbullet::destory(int k){
-    Bullet *it = head;
+Bullet* normalbullet::destory(int k){
+    Bullet *it = Head;
     if(k == 0){
-        head = head->next;
+        Head = Head->next;
         delete it;
     }
     else{
@@ -92,14 +81,22 @@ void normalbullet::destory(int k){
     delete temp;
     }
     --cnt;
+    return Head;
 }
 
-void normalbullet::move(){
-    Bullet *it = head;
+Bullet* normalbullet::move(){
+    //Head = Q_NULLPTR;
+    //if(Head == NULL)qDebug() << "error";
+    //Head = new Bullet;
+    //qDebug() << "am i ";
+    Bullet* it = Head;
+    //qDebug() << "dead??";
+    //if(Head != NULL)it = Head;
+    //qDebug() << "now ?";
     int i = 0;
     while (it != nullptr) {
         it->bull.setX(it->bull.x() + (it->fx ? xspeed : -xspeed));
-        it->bull.setY(it->bull.y() + (it->fx ? yspeed : -yspeed));
+        it->bull.setY(it->bull.y() + yspeed);
         it->bull.setWidth(BulletSIZE);
         it->bull.setHeight(BulletSIZE);
         Bullet *temp = it->next;
@@ -111,4 +108,6 @@ void normalbullet::move(){
         it = temp;
         i++;
     }
+    //qDebug() << "dead";
+    return Head;
 }

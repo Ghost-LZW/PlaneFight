@@ -1,10 +1,11 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
-#include<QRectF>
+#include<QRect>
 #include<QSound>
 #include<QImage>
 #include<QPixmap>
 #include<QMessageBox>
+#include <QDebug>
 
 #define MAX_BLOD 10000000
 #define MIN_BLOD 0
@@ -17,13 +18,13 @@
 #define BOURNTIME 1500
 
 struct Plan{
-    QRectF plan;
+    QRect plan;
     int Blood;
     Plan *next;
 };
 
 struct Bullet{
-    QRectF bull;
+    QRect bull;
     int harm;
     int fx;
     Bullet* next;

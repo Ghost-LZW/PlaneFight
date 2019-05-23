@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>GameWidget</class>
  <widget class="QWidget" name="GameWidget">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,166 +14,95 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GameWidget</string>
+   <string>Plan Fight</string>
   </property>
-  <property name="layoutDirection">
-   <enum>Qt::LeftToRight</enum>
-  </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" rowspan="2" colspan="2">
-    <widget class="QWidget" name="back" native="true">
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <widget class="QLabel" name="background_label">
-      <property name="geometry">
-       <rect>
-        <x>9</x>
-        <y>9</y>
-        <width>16</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QWidget" name="Start" native="true">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>390</y>
-        <width>183</width>
-        <height>126</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <widget class="QLabel" name="start">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>9</y>
-         <width>16</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="title" native="true">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>120</y>
-        <width>631</width>
-        <height>221</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <widget class="QLabel" name="titele">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>9</y>
-         <width>16</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="Tip" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>71</width>
-        <height>71</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <widget class="QLabel" name="tip">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>16</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="soun" native="true">
-      <property name="geometry">
-       <rect>
-        <x>820</x>
-        <y>30</y>
-        <width>61</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <widget class="QLabel" name="sound">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>16</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QWidget" name="tippage" native="true">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>60</y>
-        <width>711</width>
-        <height>331</height>
-       </rect>
-      </property>
-      <widget class="QLabel" name="Tippage">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>130</y>
-         <width>54</width>
-         <height>12</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </widget>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QLabel" name="background_label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>960</width>
+     <height>540</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="start">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>405</y>
+     <width>183</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="titele">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>120</y>
+     <width>631</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="tip">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>70</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="sound">
+   <property name="geometry">
+    <rect>
+     <x>820</x>
+     <y>30</y>
+     <width>61</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="author_label">
+   <property name="geometry">
+    <rect>
+     <x>852</x>
+     <y>495</y>
+     <width>81</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>background_label</zorder>
+  <zorder>start</zorder>
+  <zorder>titele</zorder>
+  <zorder>sound</zorder>
+  <zorder>tip</zorder>
+  <zorder>author_label</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

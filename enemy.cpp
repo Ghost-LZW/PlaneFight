@@ -7,6 +7,24 @@ enemy::enemy(){
     my.level = 1;
     vx = 10;
     vy = 0;
+    PLANSIZE = 50;
+    Phead = nullptr;
+    PicLocation = ":/res/enemy.png";
+    PlanImage = new QPixmap;
+    PlanImage->load(PicLocation);
+    cnt = 0;
+}
+
+void enemy::init(){
+    gg = true;
+    my.Speed = 10;
+    my.Attac = 10;
+    my.level = 1;
+    vx = 10;
+    vy = 0;
+    PLANSIZE = 50;
+    Phead = nullptr;
+    PicLocation = ":/res/enemy.png";
     PlanImage = new QPixmap;
     PlanImage->load(PicLocation);
     cnt = 0;
@@ -23,14 +41,16 @@ bool enemy::check(int herosize, int basex, int basey){
     while(it != nullptr){
         if(it->plan.x() < basex + herosize && it->plan.x() > basex && ((it->plan.y() > basey && it->plan.y() < basey + herosize) || (it->plan.y() + PLANSIZE > basey && it->plan.y() + PLANSIZE < basey + herosize)))
             return  false;
+        if(it->plan.x() + PLANSIZE > basex && it->plan.x() + PLANSIZE < basex + herosize && it->plan.y() <= basey && it->plan.y() + PLANSIZE <= basey + herosize)
+            return  false;
         it = it->next;
     }
     return  true;
 }
 
 void enemy::add(int x, int y, int blood){
-    Plan *it;
-    it = new Plan;
+    if(!check(enemy::PLANSIZE, x, y))return;
+    Plan *it = new Plan;
     it->Blood = blood;
     it->plan.setX(x);
     it->plan.setY(y);
@@ -44,6 +64,8 @@ void enemy::add(int x, int y, int blood){
         Phead = it;
     }
     cnt++;
+    qDebug() << "creat it";
+    qDebug() << (Phead == nullptr ? "can't" : "win");
 }
 
 int enemy::getinf(int i, int wh){
@@ -56,23 +78,26 @@ int enemy::getinf(int i, int wh){
         return (wh == 0) ? int(it->plan.x()) : int(it->plan.y());
 }
 
-void enemy::destory(int k){
+Plan* enemy::destory(int k){
     Plan *it = Phead;
+    //qDebug() << "Crashed ??";
     if(k == 0){
         Phead = Phead->next;
-        delete it;
+        free(it);
     }
     else{
     for(int i = 0; i < k - 1; i++)
         it = it->next;
     Plan *temp = it->next;
     it->next = temp->next;
-    delete temp;
+    free(temp);
     }
+    //qDebug() << "here";
     --cnt;
+    return Phead;
 }
 
-void enemy::move(){
+Plan* enemy::move(){
     Plan *it = Phead;
     int i = 0;
     while(it != nullptr){
@@ -89,4 +114,5 @@ void enemy::move(){
         i++;
         it = temp;
     }
+    return Phead;
 }

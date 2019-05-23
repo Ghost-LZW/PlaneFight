@@ -6,72 +6,49 @@
 #include<QHBoxLayout>
 #include<QVBoxLayout>
 #include<QBoxLayout>
-#include<hero.h>
-#include<enemy.h>
-#include<global.h>
-#include<normalbullet.h>
 #include<windows.h>
-
-hero *Ownplan;
-enemy *Fish;
-normalbullet *Bull;
+#include <ctime>
+#include <cstdlib>
+#include <cstring>
 
 GameWidget::GameWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::GameWidget)
 {
     ui->setupUi(this);
-    //QHBoxLayout *to = new QHBoxLayout;
-    //to->addWidget(ui->Tip);
-    //to->addStretch();
-    //to->addWidget(ui->soun);
-    //QVBoxLayout *al = new QVBoxLayout;
-    //al->addLayout(to);
-    //al->addStretch();
-    //al->addWidget(ui->title);
-    //al->addWidget(ui->start);
-    //QVBoxLayout *all = new QVBoxLayout;
-    //all->addWidget(ui->back);
-    //all->addLayout(al);
-    //all->addLayout(this->layout());
-    //setLayout(all);
+
     setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
-    setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
+    //setWindowFlags(windowFlags() & ~Qt::WindowCloseButtonHint);
     setFixedSize(this->width(), this->height());
-    setWindowTitle("Plan fight!");
     setWindowIcon(QIcon(":/res/can.ico"));
+    LoadMeau();
+
     backsound = new QSound(":/res/bac.wav", this);
     backsound->play();
     soundStatu = true;
-    LoadMeau();
+
     update();
     ui->tip->installEventFilter(this);
     ui->start->installEventFilter(this);
     ui->background_label->installEventFilter(this);
-    ui->titele->installEventFilter(this);
     ui->sound->installEventFilter(this);
 }
 
 void GameWidget::LoadMeau(){
     background = new QImage;
-    ui->background_label->setScaledContents(true);
-    background->load(":/res/bejin.jpg");
+    background->load(":/res/beijin.png");
     ui->background_label->setPixmap(QPixmap::fromImage(*background));
     tip = new QImage;
-    ui->tip->setScaledContents(true);
-    tip->load(":/res/tip.jpg");
+    tip->load(":/res/tip.png");
     ui->tip->setPixmap(QPixmap::fromImage(*tip));
     start = new QImage;
-    ui->start->setScaledContents(true);
-    start->load(":/res/begin.jpg");
+    start->load(":/res/begin.png");
     ui->start->setPixmap(QPixmap::fromImage(*start));
     sound = new QImage;
-    ui->sound->setScaledContents(true);
-    sound->load(":/res/sound.jpg");
+    sound->load(":/res/sound.png");
     ui->sound->setPixmap(QPixmap::fromImage(*sound));
     title = new QImage;
-    ui->titele->setScaledContents(true);
-    title->load(":/res/title.jpg");
+    title->load(":/res/title.png");
     ui->titele->setPixmap(QPixmap::fromImage(*title));
 }
 
@@ -83,9 +60,9 @@ void GameWidget::Gamebegin(){
     ui->tip->clear();
     ui->tip->removeEventFilter(this);
     ui->titele->clear();
-    ui->titele->removeEventFilter(this);
     ui->sound->clear();
     ui->sound->removeEventFilter(this);
+    //background->load(":/res/game.png");
     Play();
 }
 
@@ -100,29 +77,33 @@ int GameWidget::ExitGame(){
 
 void GameWidget::Play(){
     repaint();
-    hero *Ownplan;
-    enemy *Fish;
-    normalbullet *Bull;
     Ownplan = new hero;
-    Ownplan->init(0, GAMEHIGHT / 2);
+    Ownplan->init(10, GAMEHIGHT / 2);
     Fish = new enemy;
     Bull = new normalbullet;
-    this->Heropic = Ownplan->PlanImage;
+    Bull->init();
+    this->Heropic = new QPixmap(QPixmap::fromImage(QImage(Ownplan->PicLocation)));
     this->Enemypic = Fish->PlanImage;
+    this->Fishhead = Fish->Phead;
     this->Bullpic = Bull->BulletPic;
-    *this->myplan = Ownplan->Loc;
+    this->bullhead = Bull->Head;
+    this->myplan = Ownplan->Loc;
     EnemyShotID = startTimer(SLOWSHOT);
     EnemyMoveID = startTimer(SLOWSPEED);
-    BulletMoveID = startTimer(10);
+    BulletMoveID = startTimer(20);
     GlobalID = startTimer(BOURNTIME);
     MSG msg;
-
+    //Bull->move();
     while(true){
+        //qDebug() << "循环开始";
+        //qDebug()<< "4";
+        //Bull->ask();
         if(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)){
             if(msg.message == WM_QUIT)
                 break;
             else if(msg.message == WM_KEYDOWN) {
-                unsigned key = msg.wParam;
+                unsigned long long key = msg.wParam;
+                if(msg.wParam == 81 || msg.wParam == 113)break;
                 switch (key) {
                 case 'A':
                 case 'a':
@@ -134,21 +115,28 @@ void GameWidget::Play(){
                 case 'D':
                     Ownplan->move(int(key));
                     break;
-                case 32:
+                case ' ':
                 case 'j':
                 case 'J':
-                    Bull->add(int(myplan->plan.x()) + Ownplan->PLANSIZE, int(myplan->plan.y()) + Ownplan->PLANSIZE / 2, Ownplan->my.Attac, 1);
+                    bullhead = Bull->add(int(myplan->plan.x()) + Ownplan->PLANSIZE, int(myplan->plan.y()) + Ownplan->PLANSIZE / 2, Ownplan->my.Attac, 1);
                     break;
                 default: break;
                 }
             }
+            //qDebug() << "use it" << msg.wParam;
             update();
             TranslateMessage(&msg);
+            //qDebug() << "5";
+            //Bull->ask();
             DispatchMessage(&msg);
+            //qDebug() << "6";
+            //Bull->ask();
         }
+        //qDebug()<< "1";
+        //Bull->ask();
         /*int lastlevel = Ownplan->my.level;
         Ownplane.level = Ownplane.my.score / 10 + 1;*/
-
+        //qDebug() << "or here";
         if(!Fish->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()))){
             Ownplan = nullptr;
             myplan = nullptr;
@@ -157,55 +145,69 @@ void GameWidget::Play(){
                 Fish->destory(0);
             break;
         }
-
-        if(Bull->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()), 1)){
+        if(!Bull->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()), 1)){
             break;
         }
-
         for(int i = 0; i < Fish->cnt; i++){
             int x = Fish->getinf(i, 0);
             int y = Fish->getinf(i, 1);
-            if(x != -1 && Bull->check(Fish->PLANSIZE, x, y, 0)){
-                Fish->destory(i);
+            if(x != -1 && !Bull->check(Fish->PLANSIZE, x, y, 0)){
+                Fishhead = Fish->destory(i);
                 --i;
                 Ownplan->socor++;
             }
         }
-
         if(Ownplan->my.Blood == 0) break;
-        update();
+        this->update();
     }
     killTimer(EnemyMoveID);
     killTimer(EnemyShotID);
     killTimer(BulletMoveID);
     killTimer(GlobalID);
     char Info[40];
-    sprintf(Info, "*你的得分是%d*\n*达到等级%d*", Ownplan->socor, Ownplan->my.level);
+    sprintf(Info, "Socor: %d\nlevel: %d", Ownplan->socor, Ownplan->my.level);
     QString buffer(Info);
     QMessageBox::information(this, "GameOver", buffer);
     BackMeau();
 }
 
+void GameWidget::BackMeau(){
+    //background->load(":/res/beijin.png");
+    ui->background_label->setPixmap(QPixmap::fromImage(*background));
+    ui->tip->setPixmap(QPixmap::fromImage(*tip));
+    ui->start->setPixmap(QPixmap::fromImage(*start));
+    ui->titele->setPixmap(QPixmap::fromImage(*title));
+    ui->sound->setPixmap(QPixmap::fromImage(*sound));
+    ui->author_label->setText("by :liupo");
+    ui->background_label->installEventFilter(this);
+    ui->tip->installEventFilter(this);
+    ui->start->installEventFilter(this);
+    ui->titele->installEventFilter(this);
+    ui->sound->installEventFilter(this);
+}
+
 void GameWidget::timerEvent(QTimerEvent *t){
-    srand(time_t(nullptr));
-    if(t->timerId() == GlobalID)
-    {
-        Fish->add(GAMEWIGHT - Fish->PLANSIZE, (rand() % (GAMEHIGHT - Fish->PLANSIZE)), rand() % 10000);
+    srand(time(nullptr));
+    //qDebug() << "time " << t->timerId() << " " << GlobalID << " " << EnemyMoveID << " " << EnemyShotID << " " << BulletMoveID;
+    //qDebug()<< "touch it";
+    //Bull->ask();
+    //if(t->timerId() == 7)qDebug() << "time for me";
+    if(t->timerId() == GlobalID){
+        Fish->add(GAMEWIGHT - Fish->PLANSIZE  - 10, ((rand() * rand()) % (GAMEHIGHT - Fish->PLANSIZE)), rand() % 10000);
+        Fishhead = Fish->Phead;
+        //qDebug() << (Fish->Phead == nullptr ? "Phead kong" : "Phead have");
+        //qDebug() << (Fishhead == nullptr ? "creat win" : "fault");
     }
-    else if(t->timerId() == EnemyMoveID)
-    {
-        Fish->move();
+    else if(t->timerId() == EnemyMoveID){
+        Fishhead = this->Fish->move();
     }
-    else if(t->timerId() == BulletMoveID)
-    {
-        Bull->move();
+    else if(t->timerId() == BulletMoveID){
+        bullhead = Bull->move();
     }
-    else if(t->timerId() == EnemyShotID)
-    {
+    else if(t->timerId() == EnemyShotID){
         Plan *it = Fish->Phead;
-        while(it != nullptr)
-        {
-            Bull->add(it->plan.x() + it->plan.width() + Bull->BulletSIZE, it->plan.y() + (Fish->PLANSIZE + Bull->BulletSIZE / 2) / 2, 100, 0);
+        while(it != nullptr){
+            bullhead = Bull->add(it->plan.x() - Bull->BulletSIZE, it->plan.y() + (Fish->PLANSIZE + Bull->BulletSIZE / 2) / 2, 100, 0);
             it = it->next;
         }
     }
@@ -213,9 +215,10 @@ void GameWidget::timerEvent(QTimerEvent *t){
 }
 
 bool GameWidget::eventFilter(QObject *obj, QEvent *ev){
-    if(obj == ui->Start && ev->type() == QEvent::MouseButtonPress)
+    //qDebug() << "error";
+    if(obj == ui->start && ev->type() == QEvent::MouseButtonPress)
         Gamebegin();
-    else if (obj == ui->soun && ev->type() == QEvent::MouseButtonPress) {
+    else if (obj == ui->sound && ev->type() == QEvent::MouseButtonPress) {
         if(soundStatu){
             backsound->stop();
             soundStatu = false;
@@ -239,30 +242,38 @@ bool GameWidget::eventFilter(QObject *obj, QEvent *ev){
 }
 
 void GameWidget::paintEvent(QPaintEvent *){
+    //qDebug() << "test it";
     QPainter painter(this);
+    //QPixmap qq(":/res/enemy.png");
+    //if(Enemypic != nullptr)painter.drawPixmap(60, 60, qq.width(), qq.height(), *Enemypic);
     if(background == nullptr)return;
-    ui->background_label->resize(ui->back->size());
-    ui->tip->resize(ui->Tip->size());
-    ui->start->resize(ui->Start->size());
-    ui->sound->resize(ui->soun->size());
-    ui->titele->resize(ui->title->size());
-    painter.drawPixmap(0, 0, background->width(), background->height(), QPixmap::fromImage(*background));
+    //ui->background_label->resize(ui->back->size());
+    //ui->tip->resize(ui->Tip->size());
+    //ui->start->resize(ui->Start->size());
+    //ui->sound->resize(ui->soun->size());
+    //ui->titele->resize(ui->title->size());
+    painter.drawPixmap(0, 0, background->width(), background->height(), QPixmap::fromImage(QImage(":/game.png")));
     if(this->Heropic == nullptr || this->myplan == nullptr)
         return;
-    painter.drawPixmap(myplan->plan.x(), myplan->plan.y(), myplan->plan.width(), myplan->plan.height(), *Heropic);
+    painter.drawPixmap(this->myplan->plan.x(), this->myplan->plan.y(), this->Heropic->width(), this->Heropic->height(), *this->Heropic);
+    //qDebug() << "planx = " << this->myplan->plan.x() << "plany = " << this->myplan->plan.y();
+    //qDebug() << "painter plan";
     if(Enemypic == nullptr)return;
-    Plan* enemy = Fish->Phead;
-    while (enemy != nullptr) {
-        painter.drawPixmap(enemy->plan.x(), enemy->plan.y(), enemy->plan.width(), enemy->plan.height(), *Enemypic);
-        enemy = enemy->next;
+    //qDebug() <<"tset show that " <<(Fishhead == nullptr ? 1 : 0);
+    Plan *gw = Fish->Phead;
+    //qDebug() << "next step";
+    while (gw != nullptr) {
+        painter.drawPixmap(gw->plan.x(), gw->plan.y(), this->Enemypic->width(), this->Enemypic->height(), *Enemypic);
+        gw = gw->next;
     }
+    //qDebug() << "enemy painter";
     if(Bullpic == nullptr)return;
-    Bullet *bullet = Bull->head;
+    Bullet *bullet = Bull->Head;
     while (bullet != nullptr) {
-        painter.drawPixmap(bullet->bull.x(), bullet->bull.y(), bullet->bull.width(), bullet->bull.height(), *Bullpic);
+        painter.drawPixmap(bullet->bull.x(), bullet->bull.y(), this->Bullpic->width(), this->Bullpic->height(), *Bullpic);
         bullet = bullet->next;
     }
-
+    //qDebug() << "bullt paint";
 }
 
 GameWidget::~GameWidget()

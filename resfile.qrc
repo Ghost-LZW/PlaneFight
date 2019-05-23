@@ -1,24 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>res/can.ico</file>
         <file>res/bac.wav</file>
         <file>res/begin.png</file>
         <file>res/beijin.png</file>
         <file>res/bulllet.png</file>
+        <file>res/can.ico</file>
         <file>res/enemy.png</file>
         <file>res/game.png</file>
         <file>res/hreo.png</file>
         <file>res/sound.png</file>
         <file>res/tip.png</file>
         <file>res/title.png</file>
-        <file>res/begin.jpg</file>
-        <file>res/beijin.jpg</file>
-        <file>res/bulllet.jpg</file>
-        <file>res/enemy.jpg</file>
-        <file>res/game.jpg</file>
-        <file>res/hreo.jpg</file>
-        <file>res/sound.jpg</file>
-        <file>res/tip.jpg</file>
-        <file>res/title.jpg</file>
     </qresource>
 </RCC>

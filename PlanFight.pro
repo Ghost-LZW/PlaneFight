@@ -31,8 +31,7 @@ SOURCES += \
         main.cpp \
         gamewidget.cpp \
         normalbullet.cpp \
-        plan.cpp \
-        zidan.cpp
+        plan.cpp
 
 HEADERS += \
         boos.h \
@@ -41,8 +40,7 @@ HEADERS += \
         global.h \
         hero.h \
         normalbullet.h \
-        plan.h \
-        zidan.h
+        plan.h
 
 FORMS += \
     gamewidget.ui
@@ -53,4 +51,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    res.qrc
+    resfile.qrc
