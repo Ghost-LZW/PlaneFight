@@ -138,7 +138,6 @@ void GameWidget::Play(){
         Ownplane.level = Ownplane.my.score / 10 + 1;*/
         //qDebug() << "or here";
         if(!Fish->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()))){
-            Ownplan = nullptr;
             myplan = nullptr;
             Ownplan->destory();
             while(Fish->cnt)
@@ -146,7 +145,7 @@ void GameWidget::Play(){
             break;
         }
         if(!Bull->check(Ownplan->PLANSIZE, int(myplan->plan.x()), int(myplan->plan.y()), 1)){
-            break;
+            Ownplan->my.Blood -= Fish->my.Attac;
         }
         for(int i = 0; i < Fish->cnt; i++){
             int x = Fish->getinf(i, 0);
@@ -195,8 +194,6 @@ void GameWidget::timerEvent(QTimerEvent *t){
     if(t->timerId() == GlobalID){
         Fish->add(GAMEWIGHT - Fish->PLANSIZE  - 10, ((rand() * rand()) % (GAMEHIGHT - Fish->PLANSIZE)), rand() % 10000);
         Fishhead = Fish->Phead;
-        //qDebug() << (Fish->Phead == nullptr ? "Phead kong" : "Phead have");
-        //qDebug() << (Fishhead == nullptr ? "creat win" : "fault");
     }
     else if(t->timerId() == EnemyMoveID){
         Fishhead = this->Fish->move();
